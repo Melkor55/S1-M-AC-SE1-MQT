@@ -1,0 +1,13 @@
+Tema laborator1: termen: 3 octombrie 2023, ora 8.00, la laborator
+
+1. Crearea unui cont GitHub.
+In cazul in care aveti deja un cont, trimiteti numele contului.
+Contul va fi folosit pentru salvarea proiectelor de laborator. 
+Pe pagina cursului exista formularul "GIThub Formular"
+Completati formularul si trimiteti-l pana luni,2.10.2023, ora 10.00.
+
+2. Instalati Docker Desktop.
+Consultati documentul instalingKafka.pdf
+
+
+Pentru orice nelamuriri, va rog sa ma contactati: laurentia.timar@cs.upt.ro
