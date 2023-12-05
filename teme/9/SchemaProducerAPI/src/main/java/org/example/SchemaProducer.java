@@ -38,8 +38,8 @@ public class SchemaProducer {
 
         // Create a message
         GenericRecord user = new GenericData.Record(schema);
-        user.put("name", "John Doe");
-        user.put("age", 30);
+        user.put("name", "Ion Zapada");
+        user.put("age", 50);
 
         // Send the message
         String topic = "SchemaTopic";
