@@ -11,7 +11,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-console.log(config)
+// console.log(config);
+producer.producer();
 
 app.use((request, response, next) => {
     console.log('--- Middleware ---');

@@ -1,7 +1,8 @@
 var config =
 {
     "noptions": {
-        "metadata.broker.list": "localhost:9092",
+        // "metadata.broker.list": "localhost:19092",
+        "kafkaHost": 'localhost:19092',
         "group.id": "kafka-streams-test-native",
         "client.id": "kafka-streams-test-name-native",
         "event_cb": true,
