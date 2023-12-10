@@ -265,24 +265,41 @@ var TemplateOrder = {
     TotalPret: 700,
     Produse: []
 }
+const initialOrder = {
+    Numar: Array.from({length: 10}, () => Math.floor(Math.random() * 10)).join(''),
+    Data: new Date().toLocaleString(),
+    Adresa: '',
+    TotalPret: 0,
+    Produse: null
+}
 
 export default function NewOrder(props) {
 
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [date, setDate] = useState(new Date().toLocaleString());
+    const [orderNumber, setOrderNumber] = useState(Array.from({length: 10}, () => Math.floor(Math.random() * 10)).join(''));  // generates 10 digit number
+    const [adresa, setAdresa] = useState('');
+    const [orderReady, setOrderReady] = useState(false);
+    const [order, setOrder] = useState(initialOrder)
+    var Order;
     
     const setupOrder = (Produs) => {
-        let Order = {
-            Numar: '2325443534',
-            Data: date,
-            Adresa: 'Cluj',
-            TotalPret: totalPrice + Produs.Pret,
-            Produse: cartItems.concat({...Produs, Cantitate: 1})
-        }
+        console.log('adauga');
+        Order = order;
+        // Order = {
+        //     // Numar: orderNumber,
+        //     Data: date,
+        //     // Adresa: 'Cluj',
+        //     TotalPret: totalPrice + Produs.Pret,
+        //     Produse: cartItems.concat({...Produs, Cantitate: 1})
+        // }
+        Order.TotalPret = totalPrice + Produs.Pret;
+        Order.Produse = cartItems.concat({...Produs, Cantitate: 1});
         setTotalPrice(Order.TotalPret);
         setCartItems(Order.Produse);
-        props.onOrderChange(Order);
+        setOrder(Order);
+        // props.onOrderChange(Order);
     }
 
     useEffect(() => {
@@ -291,17 +308,51 @@ export default function NewOrder(props) {
         {
             setTotalPrice(0);
             setCartItems([]);
+            setOrder(initialOrder);
+            setAdresa('');
+            console.log(order);
+
+            props.setResetButtonPressed(false);
         }
     }, [props.resetOrder] )
     
     useEffect(() => {
         // date = new Date().toLocaleString();
-    }, [] )
+        if(order.Adresa !== '' && order.TotalPret !== 0 && order.Produse !== null)
+        {
+            console.log(order);
+            props.onOrderChange(order);
+        }
+    }, [order.Adresa, order.TotalPret, order.Produse] )
+
+    useEffect(() => {
+        // console.log(adresa);
+    }, [adresa] )
     
     return (
         <Box
-            sx={{ height: 500 }}
+            sx={{ height: 550 }}
         >
+            <Stack
+                direction="row"
+                spacing={2}
+                justifyContent={'center'}
+                sx={{marginY: "10px"}}
+            >
+                <TextField 
+                    label={'Adresa:'} 
+                    variant="outlined" 
+                    value={adresa}
+                    onChange={(e) => {setOrder(prevOrder => ({...prevOrder, Adresa: e.target.value})) ; setAdresa(e.target.value)}}
+                    fullWidth
+                />
+                <TextField
+                    label={'Comanda:'}
+                    variant="outlined"
+                    value={order.Numar}
+                    fullWidth
+                />
+            </Stack>
             Produse:
             <List sx={{ minWidth: '600px', maxWidth: '1300px', height: "400px", overflow: 'auto',marginY: 2, paddingBottom: 0, bgcolor: 'background.paper', border: 2, borderColor: 'gray' }}>
                 {Produse.map((Produs,index) => {

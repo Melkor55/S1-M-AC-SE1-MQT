@@ -5,6 +5,10 @@ import { Link, NavLink, useNavigate  } from 'react-router-dom'
 import {Delete, ExitToApp, ExpandMore} from '@mui/icons-material';
 
 export default function Order({comanda, index}) {
+    useEffect(() => {
+        console.log("---------------------------------------");
+        console.log(comanda)
+    }, [comanda] )
     return (
             <Accordion
                 sx={{border: 1, borderColor: 'primary.main'}}

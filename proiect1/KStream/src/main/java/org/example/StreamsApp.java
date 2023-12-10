@@ -5,6 +5,7 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Predicate;
 
 import java.util.Properties;
 
@@ -20,20 +21,25 @@ public class StreamsApp {
         // Create a StreamsBuilder
         StreamsBuilder builder = new StreamsBuilder();
 
-        // Create a stream for the first topic
-        KStream<String, String> stream1 = builder.stream("kstream-topic1");
+        // Create a KStream that represents the stream of incoming records
+        KStream<String, String> stream = builder.stream("kstream-topic1");
 
-        // Create a stream for the second topic
-        KStream<String, String> stream2 = builder.stream("kstream-topic2");
+        // Define the predicate function
+        Predicate<String, String> predicate = (key, value) -> checkIfProductsInStock(value);
 
-        // Merge the two streams
-        KStream<String, String> merged = stream1.merge(stream2);
+        // Filter the stream based on the predicate
+        KStream<String, String> filteredStream = stream.filter(predicate);
 
-        // Write the merged stream to the output topic
-        merged.to("kstream-merged-topic");
+        // Write the filtered records to the output topic
+        filteredStream.to("kstream-topic2");
 
         // Create and start the Kafka Streams application
         KafkaStreams streams = new KafkaStreams(builder.build(), props);
         streams.start();
+    }
+
+    private static boolean checkIfProductsInStock(String value) {
+        // Return true if the value should be kept, false otherwise
+        return true;
     }
 }

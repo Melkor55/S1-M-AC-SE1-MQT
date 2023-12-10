@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider,  IconButton,  List,  ListItem,  ListItemButton,  ListItemIcon,  ListItemText,  Stack, TextField, Typography } from '@mui/material';
 import { Link, NavLink, useNavigate  } from 'react-router-dom'
@@ -83,15 +83,15 @@ export default function Orders() {
     const [comanadaNouaButtonPressed, setComanadaNouaButtonPressed] = useState(false);
     const [sendButtonPressed, setSendButtonPressed] = useState(false);
     const [resetButtonPressed, setResetButtonPressed] = useState(false);
-    const [comanda, setComanda] = useState();
+    const [comanda, setComanda] = useState(null);
 
-    const sendOrder = () => { 
-        axios.post('http://localhost:3001/login', Order)
+    const sendOrder = (Order) => { 
+        axios.post('http://localhost:8051/api', Order)
         .then(function (response) {
-        console.log(response.data);
+            console.log(response.data);
         })
         .catch(function (error) {
-        // console.log(error);
+            console.log(error);
         });
     }
 
@@ -107,18 +107,33 @@ export default function Orders() {
     }
 
     const handleResetOrderButton = () => {
-        setComanda();
+        setComanda(null);
         setResetButtonPressed(true);
     }
 
     const handleSendOrderButton = () => {
+        console.log(comanda);
+        sendOrder(comanda);
         setSendButtonPressed(true);
     }
     
     const handleOnOrderChange = (Comanda) => {
-        console.log(Comanda)
-        setComanda(Comanda);
+        console.log(Comanda);
+        setComanda({...Comanda});
     }
+
+    const refreshComanda = (Comanda) => {
+        console.log('refresh');
+        if(comanda)
+            return <Order comanda={Comanda} index={123}/>
+    }
+
+
+    useEffect(() => {
+        // if(comanda)
+        //     refreshComanda(comanda);
+        console.log(comanda);
+    }, [comanda] )
 
     return([
         <Stack
@@ -190,13 +205,15 @@ export default function Orders() {
             </DialogTitle>
             {/* <Box sx={{ width: "1800px"}}/> */}
             <DialogContent>
-                <NewOrder onOrderChange={(Comanda) => {handleOnOrderChange(Comanda)}} resetOrder={resetButtonPressed}/>
+                {/* List of products for order */}
+                <NewOrder onOrderChange={(Comanda) => {handleOnOrderChange(Comanda)}} setResetButtonPressed={(value) => {setResetButtonPressed(false);}} resetOrder={resetButtonPressed}/>
                 <Divider/>
                 <br/>
                 Sumar Comanda:
-                { comanda &&
+                {/* { comanda &&
                     <Order comanda={comanda} index={123}/>
-                }
+                } */}
+                {comanda && refreshComanda(comanda)}
             </DialogContent>
             <DialogActions>
                 <Button autoFocus title='Reset Order' variant="contained" sx={{m: '0 auto 5px 5px'}} onClick={handleResetOrderButton} /*disabled={filesToUpload.length===0}*/>

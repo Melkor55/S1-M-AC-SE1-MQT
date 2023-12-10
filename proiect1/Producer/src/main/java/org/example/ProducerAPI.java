@@ -7,7 +7,9 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import java.util.Properties;
 
 public class ProducerAPI {
-    public static void main(String[] args) {
+    private KafkaProducer<String, String> producer;
+
+    public ProducerAPI() {
         // Define the Kafka properties
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:9092");
@@ -15,12 +17,16 @@ public class ProducerAPI {
         props.put("value.serializer", StringSerializer.class.getName());
 
         // Create the producer
-        KafkaProducer<String, String> producer = new KafkaProducer<>(props);
+        this.producer = new KafkaProducer<>(props);
+    }
 
+    public void produceMessage(String value) {
         // Send records to the first topic
-        ProducerRecord<String, String> record1 = new ProducerRecord<>("kstream-topic1", "kstream-value1");
+        ProducerRecord<String, String> record1 = new ProducerRecord<>("kstream-topic1", value);
         producer.send(record1);
+    }
 
+    public void close() {
         producer.close();
     }
 }

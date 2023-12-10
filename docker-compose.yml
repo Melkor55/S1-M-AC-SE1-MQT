@@ -77,3 +77,23 @@ services:
     depends_on:
       - kafka
 
+  kstream-app:
+    build: 
+      context: ./proiect1/KStream/Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "8050:8050"
+    depends_on:
+      - kafdrop
+
+
+  producer-app:
+    build: 
+      context: ./proiect1/Producer/Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "8051:8051"
+    depends_on:
+      - kafdrop
+
+
