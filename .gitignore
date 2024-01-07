@@ -27,3 +27,5 @@ package-lock.json
 .idea
 .vscode
 /producer
+/project1
+/frontend
