@@ -1,0 +1,5 @@
+net stop winnat
+docker start ...
+net start winnat
+
+# run in cmd if you have issues with a zombie port/process
