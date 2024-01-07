@@ -1,3 +1,5 @@
+package org.example;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import com.mongodb.client.MongoClients;
